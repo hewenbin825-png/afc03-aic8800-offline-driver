@@ -1,0 +1,9 @@
+Package: afc03-aic8800-installer-source-v0.2.0
+Scope: installer source, command list and documentation only
+Contains driver modules: no
+Contains firmware: no
+Contains camera, RKNN or model files: no
+Public release status: eligible for review and publication under the included project license
+
+Users must obtain matching AIC8800 modules and firmware from an authorized source,
+place them below wifi/modules and wifi/firmware, then run --check before --install.

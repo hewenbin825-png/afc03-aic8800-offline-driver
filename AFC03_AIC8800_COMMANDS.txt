@@ -1,0 +1,48 @@
+AFC03 AIC8800 offline installation commands
+============================================
+
+# Execute one command at a time. Do not copy comment lines.
+# Package directory on the board:
+
+cd "$HOME/afc03-aic8800"
+
+sha256sum -c SHA256SUMS.txt
+
+uname -rm
+
+sudo bash ./install_aic8800_wifi.sh --check ./wifi
+
+# STOP unless the previous command prints CHECK PASSED.
+
+sudo bash ./install_aic8800_wifi.sh --install ./wifi
+
+lsmod | grep -E 'aic8800_fdrv|aic_load_fw'
+
+modprobe --show-depends aic8800_fdrv
+
+dmesg | tail -n 150
+
+WIFI_IF="$(for p in /sys/class/net/*; do [ -d "$p/wireless" ] && basename "$p"; done | head -n 1)"
+
+printf 'Wi-Fi interface: %s\n' "$WIFI_IF"
+
+ip -brief link show dev "$WIFI_IF"
+
+sudo nmtui
+
+ip -brief address show dev "$WIFI_IF"
+
+ip route
+
+ping -c 4 223.5.5.5
+
+ping -c 4 www.baidu.com
+
+# Run persistence only after live Wi-Fi is stable.
+
+sudo bash ./install_aic8800_wifi.sh --persist ./wifi
+
+cat /etc/modules-load.d/aic8800.conf
+
+# Reboot once and repeat the interface/IP/ping checks.
+
