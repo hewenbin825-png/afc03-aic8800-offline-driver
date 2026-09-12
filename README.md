@@ -3,6 +3,18 @@
 > 适用实测环境：MLK-AFH03-AFC03、Debian 12、AArch64、Linux `6.1.99`。  
 > 预编译 `.ko` 只允许在 `uname -r` 与模块 `vermagic` 第一项完全一致时使用。本文不包含相机、MIPI、RKNN 或视觉模型内容。
 
+## 2026-09-12：4 GB 换板更新
+
+新板已确认 Debian 12 / aarch64 / 内核 `6.1.99`，总内存 `3901 MiB`；本地迁移包 323 文件校验通过，操作者确认 Wi-Fi 已连接。SSH 服务已响应，正在核对新主机指纹；新板的 SSH 登录、重启自动联网、模型与相机尚未在这份记录中验收。
+
+- [完整换板流程：文件准备、Vim 中键粘贴、时间戳提示、联网、SSH 与 passwd](docs/4gb-replacement-setup.md)
+- [CSDN 安装教程](https://blog.csdn.net/2401_87974529/article/details/164629308)
+- [v0.2.0 Wi-Fi 离线包](https://github.com/hewenbin825-png/afc03-aic8800-offline-driver/releases/tag/v0.2.0)
+
+v0.2.0 的 ZIP 和 SHA256 保持原样。本次文档新增流程使用公开包的 `install_aic8800_wifi.sh`；完整迁移包中的 `start.sh` 不属于该 Wi-Fi Release。
+
+## 2026-09-08：原板安装记录
+
 ## 1. 这次遇到的问题
 
 1. U 盘已被系统识别，但挂载命令写错：`mkdir -p/mnt/usb` 少了空格，`/ESD-USB` 又把卷标误当成设备路径。
@@ -12,7 +24,7 @@
 5. `depmod` 因 BSP 缺少 `modules.order`、`modules.builtin` 等文件产生警告，需要结合模块依赖、`dmesg` 和接口状态判断。
 6. 联网后板卡浏览器仍无法使用，但 SSH 服务可以独立启用，所以改用 Windows VS Code Remote-SSH 调试。
 
-最终结果：AIC8800 模块加载成功，真实无线接口出现，板卡取得地址并能联网，Windows 通过 SSH/VS Code 连接成功。
+原板结果（2026-09-08）：AIC8800 模块加载成功，真实无线接口出现，板卡取得地址并能联网，Windows 通过 SSH/VS Code 连接成功。
 
 ## 2. 离线包结构
 
