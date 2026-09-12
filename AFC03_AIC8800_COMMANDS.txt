@@ -46,3 +46,48 @@ cat /etc/modules-load.d/aic8800.conf
 
 # Reboot once and repeat the interface/IP/ping checks.
 
+
+# 2026-09-12: replacement-board checks. Run each stage interactively.
+# Full explanation: docs/4gb-replacement-setup.md
+# Vim only: press Esc, type :set mouse=, press Enter; drag-select with
+# the left mouse button, then middle-click in another board terminal.
+
+# Confirm 4 GB RAM and check the clock; these do not install anything.
+free -m
+
+date
+
+timedatectl status
+
+# After Wi-Fi connects:
+nmcli device status
+
+hostname -I
+
+getent hosts www.baidu.com
+
+# If the BSP already has a supported time-sync service:
+sudo timedatectl set-ntp true
+
+# In nmtui, edit the connected profile and enable automatic connection.
+# Module persistence alone does not verify cold-boot reconnection.
+
+# Enable the existing SSH service on the BOARD:
+command -v sshd
+
+sudo systemctl enable --now ssh
+
+systemctl is-active ssh
+
+# Read this fingerprint on the board and compare it on the PC:
+ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+
+# On WINDOWS, replace <BOARD_IP> before running:
+# ssh -o HostKeyAlgorithms=ssh-ed25519 linaro@<BOARD_IP>
+# Do not disable host-key checking when replacing a board.
+
+# Change the CURRENT BOARD USER password interactively.
+# Enter the current password, then the new password twice; no echo is normal.
+passwd
+
+# SSH login, a password change and cold-boot Wi-Fi are separate checks.
